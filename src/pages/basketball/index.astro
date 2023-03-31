@@ -1,0 +1,51 @@
+---
+import { useSanityClient } from 'astro-sanity';
+import { urlForImage } from '../../sanity/urlForImage';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+const posts = await useSanityClient().fetch(`*[_type == "post" &&  "Basketball" in categories[]->title]`);
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>My blog</title>
+	</head>
+	<body>
+		<Header/>
+		<div>
+		{posts && <ul class="gap-5  grid md:grid-cols-1 xl:grid-cols-3">
+			{posts.map((post) => (
+				<div class="flex justify-center">
+  				<div
+    class="block max-w-sm rounded-lg bg-white shadow-lg dark:bg-neutral-700">
+    <a href={"basketball/" + post.slug.current}>
+      <img
+        class="rounded-t-lg"
+        src={urlForImage(post.mainImage)}
+        alt="postName" />
+    </a>
+    <div class="p-6">
+      <h5
+        class="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+        {post.title}
+      </h5>
+      <p class="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+        Some quick example text to build on the card title and make up the
+        bulk of the card's content.
+      </p>
+    </div>
+  </div>
+</div>
+			))}
+		</div>
+		</ul>}
+		<Footer/>
+	</body>
+</html>
+
+
+
